@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import InputTextArea from '../components/InputTextArea';
 import SubmitButton from '../components/SubmitButton';
 import { loginUser } from '../api/userLogin';
+import useClientStore from '../store/client.store';
+import { useNavigate } from 'react-router';
 
 const loginSchema = z.object({
     username: z.string().min(4, 'Password have a least 4 characters'),
@@ -20,15 +22,18 @@ const LoginPage = () => {
         resolver: zodResolver(loginSchema),
     });
 
+    const navigate = useNavigate();
+
+    const actionLoginToGetUser = useClientStore((s) => s.actionLoginToGetUser);
+
     const onSubmit = async (data) => {
         try {
-            const res = await loginUser(data);
-            console.log(res);
+            await actionLoginToGetUser(data);
         } catch (error) {
             console.log(error);
         }
     };
-    
+
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
             <div className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-8 border border-gray-100">
