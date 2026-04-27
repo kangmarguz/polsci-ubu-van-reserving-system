@@ -23,11 +23,12 @@ const LoginPage = () => {
     const onSubmit = async (data) => {
         try {
             const res = await loginUser(data);
+            console.log(res);
         } catch (error) {
             console.log(error);
         }
     };
-
+    
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
             <div className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-8 border border-gray-100">
@@ -58,7 +59,7 @@ const LoginPage = () => {
                     />
 
                     <div className="pt-2">
-                        <SubmitButton isSubmitting={isSubmitting}/>
+                        <SubmitButton isSubmitting={isSubmitting} />
                     </div>
                 </form>
 
