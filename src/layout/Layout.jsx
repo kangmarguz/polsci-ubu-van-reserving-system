@@ -3,14 +3,14 @@ import useClientStore from '../store/client.store';
 
 const Layout = () => {
     const user = useClientStore((state) => state.user);
-    console.log(user);
-    console.log(user?.payload);
-
+    const token = useClientStore((state)=> state.token);
+    
     return (
         <div>
             Layout
-            <p>{user?.payload?.name}</p>
-            <p>{user?.payload?.email}</p>
+            <p>{user?.username}</p>
+            <p>{user?.email}</p>
+            <p>{token}</p>
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { loginUser } from '../api/userLogin';
 
 const clientStore = (set) => ({
@@ -8,9 +8,7 @@ const clientStore = (set) => ({
     actionLoginToGetUser: async (data) => {
         try {
             const res = await loginUser(data);
-            console.log(res.data);
-            set({ user: res.data });
-            set({token: res.data.token});
+            set({ user: res.data.payload, token: res.data.token });
         } catch (error) {
             console.log(error);
         }
@@ -18,14 +16,15 @@ const clientStore = (set) => ({
     actionClearToken: () => set({ token: null }),
 });
 
-const useClientStore = create(
-    persist(clientStore, {
-        name: 'client-local-storage',
-        partialize: (state) => ({
-            user: state.user,
-            token: state.toke,
-        }),
+const usePersist = {
+    name: "client-local-storage'",
+    storage: createJSONStorage(() => localStorage),
+    partialize: (state) => ({
+        user: state.user,
+        token: state.token,
     }),
-);
+};
+
+const useClientStore = create(persist(clientStore, usePersist));
 
 export default useClientStore;
