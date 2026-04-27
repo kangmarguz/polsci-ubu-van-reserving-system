@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InputTextArea = ({ register, name, label, errors, type }) => {
+const InputTextArea = ({ register, name, label, errors, type , placeholder}) => {
     const hasError = !!errors[name];
     return (
         <div className="flex flex-col gap-1.5 mb-4">
@@ -19,7 +19,7 @@ const InputTextArea = ({ register, name, label, errors, type }) => {
                             : 'border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100'
                     }   
                 `}
-                placeholder={`Enter your ${label?.toLowerCase()}`}
+                placeholder={placeholder || `Enter your ${label?.toLowerCase()}`}
             />
 
             {errors[name] && (

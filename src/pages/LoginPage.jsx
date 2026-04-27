@@ -6,10 +6,10 @@ import InputTextArea from '../components/InputTextArea';
 import SubmitButton from '../components/SubmitButton';
 import { loginUser } from '../api/userLogin';
 import useClientStore from '../store/client.store';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 const loginSchema = z.object({
-    username: z.string().min(4, 'Password have a least 4 characters'),
+    username: z.string().min(4, 'Username have a least 4 characters'),
     password: z.string().min(8, 'Password have a least 8 characters'),
 });
 
@@ -29,6 +29,7 @@ const LoginPage = () => {
     const onSubmit = async (data) => {
         try {
             await actionLoginToGetUser(data);
+            navigate('/home');
         } catch (error) {
             console.log(error);
         }
@@ -70,12 +71,12 @@ const LoginPage = () => {
 
                 <p className="text-center text-sm text-gray-500 mt-6">
                     Don't have an account?{' '}
-                    <a
-                        href="#"
+                    <Link
+                        to="/register "
                         className="text-blue-600 font-semibold hover:underline"
                     >
                         Sign up
-                    </a>
+                    </Link>
                 </p>
             </div>
         </div>
