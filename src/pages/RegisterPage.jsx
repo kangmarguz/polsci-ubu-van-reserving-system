@@ -18,6 +18,15 @@ const registerSchema = z
         message: "Passwords don't match",
         path: ['confirmPassword'],
     });
+    // .superRefine((data, ctx) => {
+    //     if (data.password !== data.confirmPassword) {
+    //         ctx.addIssue({
+    //         code: z.ZodIssueCode.custom,
+    //         message: "Passwords don't match",
+    //         path: ['confirmPassword'],
+    //         });
+    //     }
+    // })
 
 const RegisterPage = () => {
     const {

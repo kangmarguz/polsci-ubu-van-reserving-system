@@ -1,6 +1,10 @@
 import axios from 'axios';
-import api from '../services/AxiosConfig';
+import axiosInstance from '../services/axios.instance';
 
 export const loginUser = async (data) => {
-    return await axios.post('http://localhost:9444/api/login', data);
+    return await axiosInstance.post('/login', data);
 };
+
+export const registerUser = async(data)=> {
+    return await axiosInstance.post('/register',data);
+}
