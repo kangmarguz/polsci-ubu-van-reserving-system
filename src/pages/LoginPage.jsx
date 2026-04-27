@@ -4,9 +4,10 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputTextArea from '../components/InputTextArea';
 import SubmitButton from '../components/SubmitButton';
+import { loginUser } from '../api/userLogin';
 
 const loginSchema = z.object({
-    username: z.string().min(8, 'Password have a least 8 characters'),
+    username: z.string().min(4, 'Password have a least 4 characters'),
     password: z.string().min(8, 'Password have a least 8 characters'),
 });
 
@@ -19,8 +20,12 @@ const LoginPage = () => {
         resolver: zodResolver(loginSchema),
     });
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const onSubmit = async (data) => {
+        try {
+            const res = await loginUser(data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -53,7 +58,7 @@ const LoginPage = () => {
                     />
 
                     <div className="pt-2">
-                        <SubmitButton />
+                        <SubmitButton isSubmitting={isSubmitting}/>
                     </div>
                 </form>
 
