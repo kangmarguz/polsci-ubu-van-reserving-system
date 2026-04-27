@@ -13,7 +13,7 @@ const clientStore = (set) => ({
             console.log(error);
         }
     },
-    actionClearToken: () => set({ token: null }),
+    actionUserAndToken: () => set({ user: null, token: null }),
 });
 
 const usePersist = {
