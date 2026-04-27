@@ -1,0 +1,74 @@
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import InputTextArea from '../components/InputTextArea';
+import SubmitButton from '../components/SubmitButton';
+
+const loginSchema = z.object({
+    username: z.string().min(8, 'Password have a least 8 characters'),
+    password: z.string().min(8, 'Password have a least 8 characters'),
+});
+
+const LoginPage = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm({
+        resolver: zodResolver(loginSchema),
+    });
+
+    const onSubmit = (data) => {
+        console.log(data);
+    };
+
+    return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-8 border border-gray-100">
+                {/* Header Section */}
+                <div className="text-center mb-8">
+                    <h1 className="text-3xl font-bold text-gray-900">
+                        Welcome Back
+                    </h1>
+                    <p className="text-gray-500 mt-2">
+                        Please enter your details to login
+                    </p>
+                </div>
+
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+                    <InputTextArea
+                        register={register}
+                        name="username"
+                        label="Username"
+                        errors={errors}
+                    />
+
+                    <InputTextArea
+                        register={register}
+                        name="password"
+                        label="Password"
+                        type="password" // IMPORTANT: Changed from 'text' for security
+                        errors={errors}
+                    />
+
+                    <div className="pt-2">
+                        <SubmitButton />
+                    </div>
+                </form>
+
+                <p className="text-center text-sm text-gray-500 mt-6">
+                    Don't have an account?{' '}
+                    <a
+                        href="#"
+                        className="text-blue-600 font-semibold hover:underline"
+                    >
+                        Sign up
+                    </a>
+                </p>
+            </div>
+        </div>
+    );
+};
+
+export default LoginPage;
