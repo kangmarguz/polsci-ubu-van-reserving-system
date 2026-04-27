@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputTextArea from '../components/InputTextArea';
 import SubmitButton from '../components/SubmitButton';
+import { useNavigate } from 'react-router';
 
 const registerSchema = z
     .object({
@@ -27,11 +28,16 @@ const RegisterPage = () => {
         resolver: zodResolver(registerSchema),
     });
 
+    const navigate = useNavigate();
+
     const onRegisterSubmit = async (data) => {
         try {
-            console.log(data);
-            if (data.password !== data.confirmPassword) alert('check password');
-            alert('register success');
+            await new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve();
+                }, 3000);
+            }); //mocking to creat register API.
+            navigate('/')
         } catch (error) {
             console.log(error);
         }

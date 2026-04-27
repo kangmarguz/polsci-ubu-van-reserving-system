@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loader } from 'lucide-react';
-const SubmitButton = ({ isSubmitting }) => {
+const SubmitButton = ({ isSubmitting, textButton }) => {
     return (
         <div>
             <button
@@ -14,7 +14,7 @@ const SubmitButton = ({ isSubmitting }) => {
                         Processing...
                     </span>
                 ) : (
-                    'Submit'
+                    textButton || 'Submit'
                 )}
             </button>
         </div>

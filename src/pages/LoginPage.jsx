@@ -65,7 +65,7 @@ const LoginPage = () => {
                     />
 
                     <div className="pt-2">
-                        <SubmitButton isSubmitting={isSubmitting} />
+                        <SubmitButton textButton="Login" isSubmitting={isSubmitting} />
                     </div>
                 </form>
 
