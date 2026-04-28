@@ -23,8 +23,8 @@ const futureDateSchema = (fieldName) =>
 
 const reservSchema = z
     .object({
-        start: futureDateSchema('start'),
-        end: futureDateSchema('end'),
+        start: futureDateSchema('Start'),
+        end: futureDateSchema('End'),
         detail: z.string().min(4, 'Detail must be at least 4 chars'),
         people: z.array(
             z.object({
