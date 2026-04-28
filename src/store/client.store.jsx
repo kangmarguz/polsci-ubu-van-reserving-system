@@ -9,6 +9,7 @@ const clientStore = (set) => ({
         try {
             const res = await loginUser(data);
             set({ user: res.data.user, token: res.data.token });
+            return res.data.user;
         } catch (error) {
             console.log(error);
         }

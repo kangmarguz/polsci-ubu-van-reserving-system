@@ -5,7 +5,6 @@ import { Outlet } from 'react-router';
 
 const Layout = () => {
     const user = useClientStore((state) => state.user);
-    const token = useClientStore((state) => state.token);
 
     return (
         <main>

@@ -22,15 +22,14 @@ const LoginPage = () => {
     } = useForm({
         resolver: zodResolver(loginSchema),
     });
-
     const navigate = useNavigate();
-
     const actionLoginToGetUser = useClientStore((s) => s.actionLoginToGetUser);
 
     const onSubmit = async (data) => {
         try {
-            await actionLoginToGetUser(data);
-            navigate('/home');
+            const user = await actionLoginToGetUser(data);
+            if(user?.role==='ADMIN') navigate('/admin');
+            else navigate('/home');
         } catch (error) {
             console.log(error);
         }

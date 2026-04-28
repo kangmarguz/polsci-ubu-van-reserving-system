@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CardsTemplate = ({ title, desc, detail, icon }) => {
+const CardsTemplate = ({ title, desc, detail, icon, color }) => {
     return (
         <div className="relative flex flex-col items-center bg-white border border-gray-200 rounded-2xl p-6 overflow-hidden shadow-sm hover:shadow-lg hover:border-blue-400 transition-all duration-300 cursor-pointer group">
             <div className="absolute top-0 left-0 right-0 h-1 bg-linaer-to-r from-blue-400 to-indigo-500 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
