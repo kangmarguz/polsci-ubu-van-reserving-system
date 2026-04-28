@@ -4,9 +4,9 @@ import AppRoutes from './routes/AppRoutes';
 
 const App = () => {
     return (
-        <>
+        <div className='font-display'>
             <AppRoutes />
-        </>
+        </div>
     );
 };
 

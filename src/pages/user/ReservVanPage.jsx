@@ -12,20 +12,19 @@ import useClientStore from '../../store/client.store';
 import dayjs from 'dayjs';
 
 const futureDateSchema = (fieldName) =>
-    z
-        .string()
-        .min(1, `${fieldName} is required`)
-        .refine((val) => dayjs(val).isValid(), 'Invalid date format')
-        .refine((val) => {
-            const today = dayjs().startOf('day');
-            return !dayjs(val).isBefore(today);
-        }, `${fieldName} cannot be in the past`);
+    z.string()
+    .min(1, `${fieldName} is required`)
+    .refine((val) => dayjs(val).isValid(), 'Invalid date format')
+    .refine((val) => {
+        const today = dayjs().startOf('day');
+        return !dayjs(val).isBefore(today);
+    }, `${fieldName} cannot be in the past`);
 
-const reservSchema = z
-    .object({
+const reservSchema =
+    z.object({
         start: futureDateSchema('Start'),
         end: futureDateSchema('End'),
-        detail: z.string().min(4, 'Detail must be at least 4 chars'),
+        detail: z.string().min(1, 'Please fill your detail infomation.'),
         people: z.array(
             z.object({
                 role: z.string().min(1, 'Please select role.'),
@@ -40,7 +39,7 @@ const reservSchema = z
             return end.isSame(start) || end.isAfter(start);
         },
         {
-            message: 'End date must be after start date',
+            message: 'End date must be after Start date',
             path: ['end'],
         },
     );
@@ -118,7 +117,7 @@ const ReservVanPage = () => {
                                 Add Person
                             </button>
                             <button
-                                className="bg-red-400 px-5 py-2 rounded text-white font-bold cursor-pointer hover:bg-red-500 disabled:bg-red-200 disabled:cursor-not-allowed"
+                                className="bg-orange-300 px-5 py-2 rounded text-white font-bold cursor-pointer hover:bg-orange-400 disabled:bg-orange-200 disabled:cursor-not-allowed"
                                 type="button"
                                 onClick={decrease}
                                 disabled={count === 1}
