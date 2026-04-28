@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InputText = ({ register, name, label, errors, type , placeholder}) => {
+const InputText = ({ register, name, label, errors, type="text", placeholder }) => {
     const hasError = !!errors[name];
     return (
         <div className="flex flex-col gap-1.5 mb-4">
@@ -19,7 +19,11 @@ const InputText = ({ register, name, label, errors, type , placeholder}) => {
                             : 'border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100'
                     }   
                 `}
-                placeholder={placeholder || `Enter your ${label?.toLowerCase()}`}
+                placeholder={
+                    type === 'date'
+                        ? undefined // avoid weird placeholder for date
+                        : placeholder || `Enter your ${label?.toLowerCase()}`
+                }
             />
 
             {errors[name] && (

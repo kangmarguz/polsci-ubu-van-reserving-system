@@ -8,18 +8,43 @@ import InputTextArea from '../../components/InputTextArea';
 import SubmitButton from '../../components/SubmitButton';
 import InputReservDetail from '../../components/reserv/InputReservDetail';
 import { Link } from 'react-router';
+import useClientStore from '../../store/client.store';
+import dayjs from 'dayjs';
 
-const reservSchema = z.object({
-    start: z.string().min(1, 'Start is required'),
-    end: z.string().min(1, 'End is required'),
-    detail: z.string().min(4, 'Detail must be at least 4 chars'),
-    people: z.array(
-        z.object({
-            role: z.string().min(1, 'Please select role.'),
-            name: z.string().min(1, 'Please fill a person name'),
-        }),
-    ),
-});
+const futureDateSchema = (fieldName) =>
+    z
+        .string()
+        .min(1, `${fieldName} is required`)
+        .refine((val) => dayjs(val).isValid(), 'Invalid date format')
+        .refine((val) => {
+            const today = dayjs().startOf('day');
+            return !dayjs(val).isBefore(today);
+        }, `${fieldName} cannot be in the past`);
+
+const reservSchema = z
+    .object({
+        start: futureDateSchema('start'),
+        end: futureDateSchema('end'),
+        detail: z.string().min(4, 'Detail must be at least 4 chars'),
+        people: z.array(
+            z.object({
+                role: z.string().min(1, 'Please select role.'),
+                name: z.string().min(1, 'Please fill a person name'),
+            }),
+        ),
+    })
+    .refine(
+        (data) => {
+            const start = dayjs(data.start);
+            const end = dayjs(data.end);
+            return end.isSame(start) || end.isAfter(start);
+        },
+        {
+            message: 'End date must be after start date',
+            path: ['end'],
+        },
+    );
+
 const ReservVanPage = () => {
     const {
         register,
@@ -29,18 +54,19 @@ const ReservVanPage = () => {
         resolver: zodResolver(reservSchema),
     });
 
-    const [count, setCount] = useState(1);
+    const user = useClientStore((s) => s.user);
 
+    const [count, setCount] = useState(1);
     const increase = () => {
         setCount((prev) => Math.min(prev + 1, 10));
     };
-
     const decrease = () => {
         setCount((prev) => Math.max(prev - 1, 1));
     };
 
     const onSubmit = async (data) => {
         try {
+            console.log(user);
             console.log(data);
         } catch (error) {
             console.log(error);
@@ -50,20 +76,25 @@ const ReservVanPage = () => {
     return (
         <div className="w-4/5 mx-auto mt-">
             <div className="">
-                <h1 className="text-center text-3xl font-bold my-4">
-                    Please Fill Detail
+                <h1 className="text-center text-blue-600 text-3xl font-bold my-4">
+                    Van Booking
                 </h1>
+                <p className="text-center text-md font-light my-2 text-gray-500">
+                    Please fill all detail to booking the van.
+                </p>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 px-6 gap-4">
                         <InputText
                             register={register}
                             name="start"
                             label="Start Date"
+                            type="date"
                             errors={errors}
                         />
                         <InputText
                             register={register}
                             name="end"
+                            type="date"
                             label="End Date"
                             errors={errors}
                         />
