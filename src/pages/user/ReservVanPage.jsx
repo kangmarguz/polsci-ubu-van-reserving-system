@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputTextArea from '../../components/InputTextArea';
 import SubmitButton from '../../components/SubmitButton';
+import InputReservDetail from '../../components/reserv/InputReservDetail';
 
 const reservSchema = z.object({
     start: z.string().min(1, 'Start is required'),
@@ -12,7 +13,8 @@ const reservSchema = z.object({
     detail: z.string().min(4, 'Detail must be at least 4 chars'),
     people: z.array(
         z.object({
-            name: z.string().min(1, 'Required'),
+            role: z.string().min(1, 'Please select role.'),
+            name: z.string().min(1, 'Please fill a person name'),
         }),
     ),
 });
@@ -44,9 +46,9 @@ const ReservVanPage = () => {
     };
 
     return (
-        <div className="w-4/5 mx-auto mt-3 bg-red-300">
-            <div className="bg-yellow-200">
-                <p>ReservVanPage</p>
+        <div className="w-4/5 mx-auto mt-">
+            <div className="">
+                    <h1 className="text-center text-3xl font-bold my-4">Please Fill Detail</h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 px-6 gap-4">
                         <InputText
@@ -70,7 +72,6 @@ const ReservVanPage = () => {
                             errors={errors}
                         />
                     </div>
-
                     <div className="flex justify-between px-6 gap-4 my-4">
                         <div className="flex items-center gap-2">
                             <button
@@ -99,19 +100,17 @@ const ReservVanPage = () => {
                             </button>
                         </div>
                     </div>
-                    <div>
+
+                    <div className="px-6 my-4">
                         {Array.from({ length: count }).map((_, index) => (
-                            <div
+                            <InputReservDetail
                                 key={index}
-                                className="grid grid-cols-1 sm:grid-cols-1 px-6 gap-4"
-                            >
-                                <InputText
-                                    register={register}
-                                    name={`people.${index}.name`}
-                                    label={`Person: ${index + 1}`}
-                                    errors={errors}
-                                />
-                            </div>
+                                name={`people.${index}.name`}
+                                role={`people.${index}.role`}
+                                register={register}
+                                errors={errors}
+                                index={index}
+                            />
                         ))}
                     </div>
                 </form>
