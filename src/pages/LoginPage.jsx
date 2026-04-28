@@ -28,8 +28,15 @@ const LoginPage = () => {
     const onSubmit = async (data) => {
         try {
             const user = await actionLoginToGetUser(data);
-            if(user?.role==='ADMIN') navigate('/admin');
-            else navigate('/home');
+            if (user) {
+                if (user?.role === 'ADMIN') {
+                    navigate('/admin');
+                } else {
+                    navigate('/home');
+                }
+            } else {
+                alert("Invalid User");
+            }
         } catch (error) {
             console.log(error);
         }

@@ -12,6 +12,7 @@ import ReservVanHistory from '../pages/user/ReservVanHistory';
 import ManageVanReservPage from '../pages/admin/AdminHomePage';
 import useClientStore from '../store/client.store';
 import AdminHomePage from '../pages/admin/AdminHomePage';
+import AdminManagBooking from '../pages/admin/AdminManagBooking';
 
 const AppRoutes = () => {
 
@@ -38,6 +39,7 @@ const AppRoutes = () => {
                     element={<ProtectRoutes protect={<LayoutAdmin />} allowedRole="ADMIN" />}
                 >
                     <Route path="/admin" element={<AdminHomePage />} />
+                    <Route path="/admin/manage" element={<AdminManagBooking />} />
                 </Route>
 
                 {/* NOT FOUND PAGE */}

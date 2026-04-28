@@ -12,10 +12,9 @@ const ProtectRoutes = ({ protect, allowedRole }) => {
         return <AccressD9 />;
     }
 
-    // // If allowedRole is specified, check user role
-    // if (allowedRole && user?.role !== allowedRole) {
-    //     return <AccressD9 />;
-    // }
+    if (allowedRole && user?.role !== allowedRole) {
+        return <AccressD9 />;
+    }
 
     return protect;
 };

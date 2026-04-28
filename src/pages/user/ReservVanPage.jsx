@@ -148,7 +148,7 @@ const ReservVanPage = () => {
                             Submit
                         </button>
                         <Link
-                            to="/home"
+                            to={user.role === "ADMIN" ? '/admin' : '/home'}
                             className="w-1/2 bg-red-400 px-5 py-2 rounded text-white text-center font-bold cursor-pointer hover:bg-red-500"
                         >
                             <button type="button">Cancel</button>
