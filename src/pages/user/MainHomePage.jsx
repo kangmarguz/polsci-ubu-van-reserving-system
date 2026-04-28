@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import CardsTemplate from '../../components/CardsTemplate';
 import { Van, ClipboardClock } from 'lucide-react';
 import { Link } from 'react-router';
@@ -6,7 +7,12 @@ const MainHomePage = () => {
     return (
         <div className="w-4/5 mx-auto mt-3">
             <div>TABLE LIST HISTORY EVENT</div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+            <motion.div
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
                 {/* Create Card */}
                 <Link to="reserv">
                     <CardsTemplate
@@ -27,7 +33,7 @@ const MainHomePage = () => {
                         detail={'View history'}
                     />
                 </Link>
-            </div>
+            </motion.div>
         </div>
     );
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -37,7 +38,12 @@ const LoginPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-8 border border-gray-100">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="w-full max-w-md bg-white rounded-2xl shadow-xl shadow-gray-200/50 p-8 border border-gray-100"
+            >
                 {/* Header Section */}
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-gray-900">
@@ -65,7 +71,10 @@ const LoginPage = () => {
                     />
 
                     <div className="pt-2">
-                        <SubmitButton textButton="Login" isSubmitting={isSubmitting} />
+                        <SubmitButton
+                            textButton="Login"
+                            isSubmitting={isSubmitting}
+                        />
                     </div>
                 </form>
 
@@ -78,7 +87,7 @@ const LoginPage = () => {
                         Sign up
                     </Link>
                 </p>
-            </div>
+            </motion.div>
         </div>
     );
 };

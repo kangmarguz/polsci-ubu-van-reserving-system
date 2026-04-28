@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import InputText from '../../components/InputText';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -6,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import InputTextArea from '../../components/InputTextArea';
 import SubmitButton from '../../components/SubmitButton';
 import InputReservDetail from '../../components/reserv/InputReservDetail';
+import { Link } from 'react-router';
 
 const reservSchema = z.object({
     start: z.string().min(1, 'Start is required'),
@@ -48,7 +50,9 @@ const ReservVanPage = () => {
     return (
         <div className="w-4/5 mx-auto mt-">
             <div className="">
-                    <h1 className="text-center text-3xl font-bold my-4">Please Fill Detail</h1>
+                <h1 className="text-center text-3xl font-bold my-4">
+                    Please Fill Detail
+                </h1>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 px-6 gap-4">
                         <InputText
@@ -91,14 +95,6 @@ const ReservVanPage = () => {
                                 Remove Person
                             </button>
                         </div>
-                        <div>
-                            <button
-                                className="bg-green-400 px-5 py-2 rounded text-white font-bold cursor-pointer hover:bg-green-500"
-                                type="submit"
-                            >
-                                Submit
-                            </button>
-                        </div>
                     </div>
 
                     <div className="px-6 my-4">
@@ -112,6 +108,21 @@ const ReservVanPage = () => {
                                 index={index}
                             />
                         ))}
+                    </div>
+
+                    <div className="flex justify-between px-6 gap-4 my-4">
+                        <button
+                            className="w-1/2 bg-green-400 px-5 py-2 rounded text-white font-bold cursor-pointer hover:bg-green-500"
+                            type="submit"
+                        >
+                            Submit
+                        </button>
+                        <Link
+                            to="/home"
+                            className="w-1/2 bg-red-400 px-5 py-2 rounded text-white text-center font-bold cursor-pointer hover:bg-red-500"
+                        >
+                            <button type="button">Cancel</button>
+                        </Link>
                     </div>
                 </form>
             </div>
