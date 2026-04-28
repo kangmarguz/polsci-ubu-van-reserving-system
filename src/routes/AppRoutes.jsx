@@ -5,6 +5,9 @@ import Layout from '../layout/Layout';
 import RegisterPage from '../pages/RegisterPage';
 import ProtectRoutes from './ProtectRoutes';
 import PageNotFound404 from '../components/utils/PageNotFound404';
+import MainHomePage from '../pages/user/MainHomePage';
+import ReservVanPage from '../pages/user/ReservVanPage';
+import ReservVanHistory from '../pages/user/ReservVanHistory';
 
 const AppRoutes = () => {
     return (
@@ -20,7 +23,11 @@ const AppRoutes = () => {
                 <Route
                     path="/home"
                     element={<ProtectRoutes protect={<Layout />} />}
-                ></Route>
+                >
+                    <Route path="/home" element={<MainHomePage />} />
+                    <Route path="reserv" element={<ReservVanPage />} />
+                    <Route path="history" element={<ReservVanHistory />} />
+                </Route>
                 {/* PRIVATE ADMIN */}
 
                 {/* NOT FOUND PAGE */}

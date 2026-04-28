@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import InputTextArea from '../components/InputTextArea';
+import InputText from '../components/InputText';
 import SubmitButton from '../components/SubmitButton';
 import { useNavigate } from 'react-router';
 import { registerUser } from '../api/userLogin';
@@ -69,38 +69,38 @@ const RegisterPage = () => {
                     onSubmit={handleSubmit(onRegisterSubmit)}
                     className="space-y-2"
                 >
-                    <InputTextArea
+                    <InputText
                         register={register}
                         name="name"
                         label="Name"
                         errors={errors}
                     />
-                    <InputTextArea
+                    <InputText
                         register={register}
                         name="username"
                         label="Username"
                         errors={errors}
                     />
-                    <InputTextArea
+                    <InputText
                         register={register}
                         name="password"
                         label="Password"
                         errors={errors}
                     />
-                    <InputTextArea
+                    <InputText
                         register={register}
                         name="confirmPassword"
                         label="Confirm Password"
                         errors={errors}
                     />
-                    <InputTextArea
+                    <InputText
                         register={register}
                         name="email"
                         placeholder={'example.test@email.com'}
                         label="Email"
                         errors={errors}
                     />
-                    <InputTextArea
+                    <InputText
                         register={register}
                         name="phone"
                         label="Phone Number"

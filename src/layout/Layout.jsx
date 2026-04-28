@@ -1,19 +1,17 @@
 import React from 'react';
 import useClientStore from '../store/client.store';
 import MainNav from '../components/navbar/MainNav';
+import { Outlet } from 'react-router';
 
 const Layout = () => {
     const user = useClientStore((state) => state.user);
-    const token = useClientStore((state)=> state.token);
-    
-    console.log(user);
-    
+    const token = useClientStore((state) => state.token);
+
     return (
-        <div>
-            <MainNav name={user?.name}/>
-            <p>{user?.name}</p>
-            <p>{user?.email}</p>
-        </div>
+        <main>
+            <MainNav name={user?.name} />
+            <Outlet />
+        </main>
     );
 };
 

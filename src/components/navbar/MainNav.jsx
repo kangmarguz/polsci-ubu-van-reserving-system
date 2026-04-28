@@ -28,17 +28,17 @@ const MainNav = ({ name }) => {
                 {/* User Actions Section */}
                 <div className="flex items-center justify-end gap-8">
                     <div className="hidden sm:flex flex-col items-end">
-                        <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+                        <span className="text-md text-gray-500 font-medium uppercase tracking-wider">
                             Welcome
                         </span>
-                        <p className="text-sm font-semibold text-gray-800">
+                        <p className="text-md font-semibold text-gray-800">
                             {name || 'Guest User'}
                         </p>
                     </div>
 
                     <button
                         onClick={handleLogout}
-                        className="bg-red-50 text-red-600 px-5 py-2 rounded-full text-sm font-bold hover:bg-red-600 hover:text-white transition-all duration-300 cursor-pointer active:scale-95 border border-red-100 shadow-sm"
+                        className="bg-red-50 text-red-600 px-5 py-2 rounded-xl text-sm font-bold hover:bg-red-600 hover:text-white transition-all duration-300 cursor-pointer active:scale-95 border border-red-100 shadow-sm"
                     >
                         Logout
                     </button>

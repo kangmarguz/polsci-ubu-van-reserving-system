@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import InputTextArea from '../components/InputTextArea';
+import InputText from '../components/InputText';
 import SubmitButton from '../components/SubmitButton';
 import { loginUser } from '../api/userLogin';
 import useClientStore from '../store/client.store';
@@ -49,14 +49,14 @@ const LoginPage = () => {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-                    <InputTextArea
+                    <InputText
                         register={register}
                         name="username"
                         label="Username"
                         errors={errors}
                     />
 
-                    <InputTextArea
+                    <InputText
                         register={register}
                         name="password"
                         label="Password"

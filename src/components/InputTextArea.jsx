@@ -1,31 +1,24 @@
 import React from 'react';
 
-const InputTextArea = ({ register, name, label, errors, type , placeholder}) => {
-    const hasError = !!errors[name];
+const InputTextArea = ({ register, name, placeholder, errors }) => {
     return (
-        <div className="flex flex-col gap-1.5 mb-4">
-            <label className="text-sm font-medium text-gray-700 ml-1">
-                {label || 'Field'}
+        <div className="flex flex-col gap-1.5 w-full">
+            <label
+                htmlFor={name}
+                className="capitalize text-sm font-medium text-gray-700"
+            >
+                {name}
             </label>
 
-            <input
+            <textarea
+                id={name}
                 {...register(name)}
-                type={type}
-                className={`    
-                    w-full px-4 py-2.5 rounded-xl border transition-all duration-200 outline-none
-                    ${
-                        hasError
-                            ? 'border-red-400 focus:border-red-500 focus:ring-4 focus:ring-red-100'
-                            : 'border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100'
-                    }   
-                `}
-                placeholder={placeholder || `Enter your ${label?.toLowerCase()}`}
+                placeholder={placeholder}
+                rows={4}
+                className={`w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 placeholder:text-gray-400 shadow-sm transition-all duration-200 resize-none  ${errors[name] && 'border-red-500'}`}
             />
-
             {errors[name] && (
-                <p className="text-xs text-red-500 mt-1 ml-1 font-medium">
-                    {errors[name].message}
-                </p>
+                <p className="text-red-500 text-sm">{errors[name]?.message}</p>
             )}
         </div>
     );
