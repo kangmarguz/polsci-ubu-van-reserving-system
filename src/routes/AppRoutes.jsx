@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import LoginPage from '../pages/LoginPage';
 import Layout from '../layout/Layout';
 import RegisterPage from '../pages/RegisterPage';
+import ProtectRoutes from './ProtectRoutes';
+import PageNotFound404 from '../components/utils/PageNotFound404';
 
 const AppRoutes = () => {
     return (
@@ -10,13 +12,19 @@ const AppRoutes = () => {
             <Routes>
                 {/* PUBLIC ROUTE */}
                 <Route>
-                    <Route path='/' element={<LoginPage />} />
+                    <Route path="/" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                 </Route>
 
                 {/* PRIVATE USER */}
-                <Route path="/home" element={<Layout />}></Route>
+                <Route
+                    path="/home"
+                    element={<ProtectRoutes protect={<Layout />} />}
+                ></Route>
                 {/* PRIVATE ADMIN */}
+
+                {/* NOT FOUND PAGE */}
+                <Route path="*" element={<PageNotFound404 />} />
             </Routes>
         </BrowserRouter>
     );

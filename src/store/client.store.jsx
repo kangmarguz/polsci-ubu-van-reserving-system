@@ -14,7 +14,7 @@ const clientStore = (set) => ({
             console.log(error);
         }
     },
-    actionUserAndToken: () => set({ user: null, token: null }),
+    actionLogout: () => set({ user: null, token: null }),
 });
 
 const usePersist = {
