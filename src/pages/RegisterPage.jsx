@@ -5,9 +5,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import InputTextArea from '../components/InputTextArea';
 import SubmitButton from '../components/SubmitButton';
 import { useNavigate } from 'react-router';
+import { registerUser } from '../api/userLogin';
 
 const registerSchema = z
     .object({
+        name: z.string().min(1, 'Please Fill your name'),
         username: z.string().min(4, 'Username must have at least 4 characters'),
         password: z.string().min(8, 'Password must have at least 8 characters'),
         confirmPassword: z.string().min(8, 'Confirm password is required'),
@@ -18,15 +20,15 @@ const registerSchema = z
         message: "Passwords don't match",
         path: ['confirmPassword'],
     });
-    // .superRefine((data, ctx) => {
-    //     if (data.password !== data.confirmPassword) {
-    //         ctx.addIssue({
-    //         code: z.ZodIssueCode.custom,
-    //         message: "Passwords don't match",
-    //         path: ['confirmPassword'],
-    //         });
-    //     }
-    // })
+// .superRefine((data, ctx) => {
+//     if (data.password !== data.confirmPassword) {
+//         ctx.addIssue({
+//         code: z.ZodIssueCode.custom,
+//         message: "Passwords don't match",
+//         path: ['confirmPassword'],
+//         });
+//     }
+// })
 
 const RegisterPage = () => {
     const {
@@ -41,14 +43,17 @@ const RegisterPage = () => {
 
     const onRegisterSubmit = async (data) => {
         try {
-            await new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve();
-                }, 3000);
-            }); //mocking to creat register API.
-            navigate('/')
+            const res = await registerUser(data);
+            console.log(res.status);
+            if (res.ok || (res.status >= 200 && res.status < 300)) {
+                alert('register success');
+                navigate('/');
+            } else {
+                alert('error', res.status);
+            }
         } catch (error) {
             console.log(error);
+            alert("A network error occurred.");
         }
     };
 
@@ -64,6 +69,12 @@ const RegisterPage = () => {
                     onSubmit={handleSubmit(onRegisterSubmit)}
                     className="space-y-2"
                 >
+                    <InputTextArea
+                        register={register}
+                        name="name"
+                        label="Name"
+                        errors={errors}
+                    />
                     <InputTextArea
                         register={register}
                         name="username"
