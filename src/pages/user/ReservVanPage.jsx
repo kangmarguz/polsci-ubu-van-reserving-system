@@ -7,21 +7,25 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import InputTextArea from '../../components/InputTextArea';
 import SubmitButton from '../../components/SubmitButton';
 import InputReservDetail from '../../components/reserv/InputReservDetail';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import useClientStore from '../../store/client.store';
 import dayjs from 'dayjs';
+import { bookingVan } from '../../api/bookingVanAPI';
+import ButtonSubmitAndCancel from '../../components/utils/ButtonSubmitAndCancel';
+import { toast } from 'react-toastify';
 
 const futureDateSchema = (fieldName) =>
-    z.string()
-    .min(1, `${fieldName} is required`)
-    .refine((val) => dayjs(val).isValid(), 'Invalid date format')
-    .refine((val) => {
-        const today = dayjs().startOf('day');
-        return !dayjs(val).isBefore(today);
-    }, `${fieldName} cannot be in the past`);
+    z
+        .string()
+        .min(1, `${fieldName} is required`)
+        .refine((val) => dayjs(val).isValid(), 'Invalid date format')
+        .refine((val) => {
+            const today = dayjs().startOf('day');
+            return !dayjs(val).isBefore(today);
+        }, `${fieldName} cannot be in the past`);
 
-const reservSchema =
-    z.object({
+const reservSchema = z
+    .object({
         start: futureDateSchema('Start'),
         end: futureDateSchema('End'),
         detail: z.string().min(1, 'Please fill your detail infomation.'),
@@ -29,6 +33,7 @@ const reservSchema =
             z.object({
                 role: z.string().min(1, 'Please select role.'),
                 name: z.string().min(1, 'Please fill a person name'),
+                refID: z.string().optional(),
             }),
         ),
     })
@@ -53,6 +58,8 @@ const ReservVanPage = () => {
         resolver: zodResolver(reservSchema),
     });
 
+    const nagivate = useNavigate();
+
     const user = useClientStore((s) => s.user);
 
     const [count, setCount] = useState(1);
@@ -65,10 +72,37 @@ const ReservVanPage = () => {
 
     const onSubmit = async (data) => {
         try {
-            console.log(user);
-            console.log(data);
+            const result = {
+                ...data,
+                user: user,
+                start: dayjs(data.start).toISOString(),
+                end: dayjs(data.end).toISOString(),
+            };
+            const res = await bookingVan(result);
+            if (res.status === 200 || res.data.success) {
+                toast.update("success", {
+                    render: 'Success!',
+                    type: 'success',
+                    isLoading: false,
+                    autoClose: 2000,
+                });
+            } else {
+                toast.update("error", {
+                    render: res.data.message || 'Something went wrong',
+                    type: 'warning',
+                    isLoading: false,
+                    autoClose: 2000,
+                });
+            }
         } catch (error) {
             console.log(error);
+            const msg = error.response?.data?.message || 'Server Error';
+            toast.update("error", {
+                render: msg,
+                type: 'error',
+                isLoading: false,
+                autoClose: 3000,
+            });
         }
     };
 
@@ -133,27 +167,17 @@ const ReservVanPage = () => {
                                 key={index}
                                 name={`people.${index}.name`}
                                 role={`people.${index}.role`}
+                                refID={`people.${index}.refID`}
                                 register={register}
                                 errors={errors}
                                 index={index}
                             />
                         ))}
                     </div>
-
-                    <div className="flex justify-between px-6 gap-4 my-4">
-                        <button
-                            className="w-1/2 bg-green-400 px-5 py-2 rounded text-white font-bold cursor-pointer hover:bg-green-500"
-                            type="submit"
-                        >
-                            Submit
-                        </button>
-                        <Link
-                            to={user.role === "ADMIN" ? '/admin' : '/home'}
-                            className="w-1/2 bg-red-400 px-5 py-2 rounded text-white text-center font-bold cursor-pointer hover:bg-red-500"
-                        >
-                            <button type="button">Cancel</button>
-                        </Link>
-                    </div>
+                    <ButtonSubmitAndCancel
+                        role={user.role}
+                        isSubmitting={isSubmitting}
+                    />
                 </form>
             </div>
         </div>

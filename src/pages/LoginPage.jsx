@@ -8,6 +8,7 @@ import SubmitButton from '../components/SubmitButton';
 import { loginUser } from '../api/userLogin';
 import useClientStore from '../store/client.store';
 import { Link, useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 const loginSchema = z.object({
     username: z.string().min(4, 'Username have a least 4 characters'),
@@ -29,16 +30,26 @@ const LoginPage = () => {
         try {
             const user = await actionLoginToGetUser(data);
             if (user) {
+                toast('Login Success', {
+                    type: 'success',
+                });
+
                 if (user?.role === 'ADMIN') {
                     navigate('/admin');
                 } else {
                     navigate('/home');
                 }
             } else {
-                alert("Invalid User");
+                toast('Invalid User.', {
+                    type: 'error',
+                });
             }
         } catch (error) {
             console.log(error);
+            const msg = error.response?.data?.message || 'Server Error';
+            toast(msg, {
+                type: 'error',
+            });
         }
     };
 
