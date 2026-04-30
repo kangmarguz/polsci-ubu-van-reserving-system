@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import React from 'react';
+import { MoveRight } from 'lucide-react';
 
 const ModalInfomation = ({ modalState, closeModal }) => {
     const statusStyles = {
@@ -69,7 +70,7 @@ const ModalInfomation = ({ modalState, closeModal }) => {
                         </p>
                     </div>
                     <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center">
-                        <span className="text-gray-300">→</span>
+                        <MoveRight />
                     </div>
                     <div className="flex-1 text-right">
                         <p className="text-[10px] text-gray-400 uppercase font-bold mb-1">
@@ -138,7 +139,7 @@ const ModalInfomation = ({ modalState, closeModal }) => {
             <div className="shrink-0 px-6 py-4 border-t border-gray-100 bg-gray-50/50 flex justify-end">
                 <button
                     onClick={closeModal}
-                    className="px-8 py-2 rounded-xl bg-white border border-gray-200 text-sm font-bold text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all shadow-sm active:scale-95"
+                    className="px-8 py-2 rounded-xl bg-white border border-gray-200 text-sm font-bold text-gray-600 cursor-pointer hover:bg-gray-100 hover:text-gray-900 transition-all shadow-sm active:scale-95"
                 >
                     Close
                 </button>

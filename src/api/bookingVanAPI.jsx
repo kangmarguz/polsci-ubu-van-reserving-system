@@ -5,7 +5,11 @@ export const bookingVan = (data) => {
 };
 
 export const getBookingHistory =(id, limit)=> {
-    return axiosInstance.get(`/get-history/${id}`, {
+    return axiosInstance.get(`/history/${id}`, {
         params: { limit },
     });
+}
+
+export const delBookingHistory = (id)=> {
+    return axiosInstance.delete(`/history/${id}`)
 }

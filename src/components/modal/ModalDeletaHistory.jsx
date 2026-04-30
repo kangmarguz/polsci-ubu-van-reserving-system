@@ -1,43 +1,66 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import { delBookingHistory } from '../../api/bookingVanAPI';
+import { OctagonAlert } from 'lucide-react';
 const ModalDeletaHistory = ({ modalState, closeModal }) => {
-    const handleDelete = (id) => {
-        console.log(id);    
+    const [isDeleting, setIsDeleting] = useState(false);
+    const handleDelete = async (id) => {
+        setIsDeleting(true);
+        try {
+            await delBookingHistory(id);
+            closeModal();
+            window.location.reload();
+        } catch (error) {
+            console.error('Delete failed:', error);
+        } finally {
+            setIsDeleting(false);
+        }
     };
+
     return (
-        <>
-            <div className="flex justify-between items-center mb-4">
-                <h2 className="font-semibold text-gray-800">Delete booking</h2>
-                <button
-                    onClick={closeModal}
-                    className="text-gray-400 hover:text-gray-600"
-                >
-                    ✕
-                </button>
+        <div className="p-2">
+            {/* Warning Icon & Header */}
+            <div className="flex flex-col items-center text-center mb-6">
+                <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4 border border-red-100">
+                    <OctagonAlert color='red' size={48} />
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">
+                    Delete Booking ?
+                </h2>
+                <p className="text-sm text-gray-500 mt-2 px-4 leading-relaxed">
+                    You are about to delete booking{' '}
+                    <span className="font-mono font-bold text-gray-700 bg-gray-100 px-1 rounded">
+                        #{modalState.item.id}
+                    </span>
+                    . This action is permanent and cannot be undone.
+                </p>
             </div>
-            <hr className="mb-4" />
-            <p className="text-sm text-gray-600 text-center">
-                Are you sure you want to delete{' '}
-                <span className="font-semibold text-gray-800">
-                    {modalState.item.id}
-                </span>
-                ? This cannot be undone.
-            </p>
-            <div className="flex justify-end gap-2 mt-5">
+
+            {/* Action Buttons */}
+            <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
                 <button
+                    disabled={isDeleting}
                     onClick={closeModal}
-                    className="px-4 py-2 rounded-lg border text-sm hover:bg-gray-50"
+                    className="flex-1 cursor-pointer px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-all disabled:opacity-50"
                 >
-                    Cancel
+                    No, Keep it
                 </button>
                 <button
+                    disabled={isDeleting}
                     onClick={() => handleDelete(modalState.item.id)}
-                    className="px-4 py-2 rounded-lg bg-red-600 text-white text-sm hover:bg-red-700"
+                    className={`flex-1 cursor-pointer px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all shadow-sm flex items-center justify-center gap-2
+                    ${isDeleting ? 'bg-red-400' : 'bg-red-600 hover:bg-red-700 active:scale-95'}`}
                 >
-                    Yes, delete
+                    {isDeleting ? (
+                        <>
+                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            Deleting...
+                        </>
+                    ) : (
+                        'Yes, Delete Booking'
+                    )}
                 </button>
             </div>
-        </>
+        </div>
     );
 };
 
