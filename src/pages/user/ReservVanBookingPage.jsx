@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import { bookingVan } from '../../api/bookingVanAPI';
 import ButtonSubmitAndCancel from '../../components/utils/ButtonSubmitAndCancel';
 import { toast } from 'react-toastify';
+import ButtonGoBackHome from '../../components/utils/ButtonGoBackHome';
 
 const futureDateSchema = (fieldName) =>
     z
@@ -49,7 +50,7 @@ const reservSchema = z
         },
     );
 
-const ReservVanPage = () => {
+const ReservVanBookingPage = () => {
     const {
         register,
         handleSubmit,
@@ -71,44 +72,34 @@ const ReservVanPage = () => {
     };
 
     const onSubmit = async (data) => {
+        const redirectPath = user?.role === 'ADMIN' ? '/admin' : '/home';
         try {
             const result = {
                 ...data,
-                user: user,
+                user,
                 start: dayjs(data.start).toISOString(),
                 end: dayjs(data.end).toISOString(),
             };
             const res = await bookingVan(result);
-            if (res.status === 200 || res.data.success) {
-                toast.update("success", {
-                    render: 'Success!',
-                    type: 'success',
-                    isLoading: false,
-                    autoClose: 2000,
-                });
+            if (res.status === 200 || res.data?.success) {
+                toast('Booking Success', { type: 'success' });
             } else {
-                toast.update("error", {
-                    render: res.data.message || 'Something went wrong',
-                    type: 'warning',
-                    isLoading: false,
-                    autoClose: 2000,
-                });
+                const errorMsg = res.data?.message || 'Booking Fail';
+                toast(errorMsg, { type: 'error' });
             }
         } catch (error) {
-            console.log(error);
+            console.error('Booking Error:', error);
             const msg = error.response?.data?.message || 'Server Error';
-            toast.update("error", {
-                render: msg,
-                type: 'error',
-                isLoading: false,
-                autoClose: 3000,
-            });
+            toast(msg, { type: 'error' });
+        } finally {
+            navigate(redirectPath);
         }
     };
 
     return (
         <div className="w-4/5 mx-auto mt-4">
             <div>
+                <ButtonGoBackHome />
                 <h1 className="text-center text-blue-600 text-3xl font-bold my-4">
                     Van Booking
                 </h1>
@@ -184,4 +175,4 @@ const ReservVanPage = () => {
     );
 };
 
-export default ReservVanPage;
+export default ReservVanBookingPage;

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReservHistory from './ReservHistory';
 import ReservHistoryTable from './ReservHistoryTable';
+import ButtonGoBackHome from '../../components/utils/ButtonGoBackHome';
 
 const ReservVanHistory = () => {
     return (
@@ -9,6 +10,9 @@ const ReservVanHistory = () => {
                 <h1 className="text-center text-blue-600 text-3xl font-bold my-4">
                     History Lists.
                 </h1>
+
+                <ButtonGoBackHome />
+
                 <div className="p-4">
                     <ReservHistoryTable />
                 </div>
