@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import React from 'react';
-import { MoveRight } from 'lucide-react';
+import { MoveRight, X } from 'lucide-react';
 
 const ModalInfomation = ({ modalState, closeModal }) => {
     const statusStyles = {
@@ -29,7 +29,9 @@ const ModalInfomation = ({ modalState, closeModal }) => {
                     onClick={closeModal}
                     className="p-2 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                    <span className="text-xl leading-none">✕</span>
+                    <span className="text-xl leading-none cursor-pointer">
+                        <X />
+                    </span>
                 </button>
             </div>
 
