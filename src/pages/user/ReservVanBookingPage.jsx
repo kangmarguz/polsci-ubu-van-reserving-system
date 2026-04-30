@@ -62,7 +62,8 @@ const ReservVanBookingPage = () => {
     const nagivate = useNavigate();
 
     const user = useClientStore((s) => s.user);
-
+    const redirectPath = user?.role === 'ADMIN' ? '/admin' : '/home';
+    
     const [count, setCount] = useState(1);
     const increase = () => {
         setCount((prev) => Math.min(prev + 1, 10));
@@ -72,7 +73,6 @@ const ReservVanBookingPage = () => {
     };
 
     const onSubmit = async (data) => {
-        const redirectPath = user?.role === 'ADMIN' ? '/admin' : '/home';
         try {
             const result = {
                 ...data,
@@ -97,7 +97,7 @@ const ReservVanBookingPage = () => {
 
     return (
         <div className="w-4/5 mx-auto my-4 border border-gray-100 shadow-sm rounded-2xl">
-            <ButtonGoBackHome />
+            <ButtonGoBackHome redirectPath={redirectPath} />
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

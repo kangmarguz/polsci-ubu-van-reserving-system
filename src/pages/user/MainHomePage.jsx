@@ -6,8 +6,6 @@ import { Link } from 'react-router';
 import useClientStore from '../../store/client.store';
 import ReservHistory from './ReservHistory';
 const MainHomePage = () => {
-    const user = useClientStore((s) => s.user);
-
     return (
         <div className="w-4/5 mx-auto mt-3">
             <motion.div
@@ -31,7 +29,6 @@ const MainHomePage = () => {
                     <CardsTemplate
                         title="My history"
                         desc="View your reserving van history."
-                        name="Recent"
                         icon={<ClipboardClock size={128} />}
                         detail={'View History'}
                     />
@@ -41,7 +38,7 @@ const MainHomePage = () => {
                 <h1 className="text-2xl font-bold text-gray-700">
                     Latest event coming soon
                 </h1>
-                <div className='text-gray-700'>
+                <div className="text-gray-700">
                     <ClockCheck size={24} />
                 </div>
             </div>
