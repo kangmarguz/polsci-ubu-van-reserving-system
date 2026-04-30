@@ -6,7 +6,7 @@ import ButtonGoBackHome from '../../components/utils/ButtonGoBackHome';
 
 const ReservVanHistory = () => {
     return (
-        <div className="w-4/5 mx-auto mt-2 border border-gray-100 rounded-2xl">
+        <div className="w-4/5 mx-auto my-4 border border-gray-100 rounded-2xl">
             <div>
                 <ButtonGoBackHome />
                 <h1 className="text-center text-blue-600 text-3xl font-bold my-4">

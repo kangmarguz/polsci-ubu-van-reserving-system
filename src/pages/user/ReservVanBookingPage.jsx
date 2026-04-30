@@ -96,7 +96,7 @@ const ReservVanBookingPage = () => {
     };
 
     return (
-        <div className="w-4/5 mx-auto mt-4">
+        <div className="w-4/5 mx-auto my-4 border border-gray-100 rounded-2xl">
             <ButtonGoBackHome />
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
