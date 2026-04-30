@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
 import { getBookingHistory } from '../../api/bookingVanAPI';
 import useClientStore from '../../store/client.store';
 
@@ -12,7 +13,7 @@ const ReservHistory = () => {
 
     const fecthHistory = async () => {
         try {
-            const res = await getBookingHistory(user.id ,6);
+            const res = await getBookingHistory(user.id, 6);
             setHistory(res.data.result);
         } catch (error) {
             console.log(error);
@@ -26,7 +27,12 @@ const ReservHistory = () => {
     };
 
     return (
-        <div className="p-6 bg-gray-50 rounded-2xl shadow-md">
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className='border border-gray-300 rounded-xl'
+        >
             <table className="w-full border-collapse overflow-hidden rounded-xl">
                 <thead>
                     <tr className="bg-gray-100 text-gray-700 text-left text-sm uppercase tracking-wider">
@@ -53,9 +59,9 @@ const ReservHistory = () => {
                                     <div className="flex flex-col">
                                         <span className="font-medium text-gray-900">
                                             <span className="font-bold text-blue-700">
-                                                Requester : 
+                                                Requester :
                                             </span>
-                                            {item.title || "Unknown"}
+                                            {item.title || 'Unknown'}
                                         </span>
                                         <span className="text-sm text-gray-500 line-clamp-3">
                                             {item.description}
@@ -65,20 +71,6 @@ const ReservHistory = () => {
                                         </span>
                                     </div>
                                 </td>
-                                {/* <td className="px-6 py-4">
-                                    {item.taskImages.map((people, index) => {
-                                        return (
-                                            <div key={people.id}>
-                                                <p className="px-3 py-1 rounded-full text-xs font-semibol">
-                                                    Role: {people.url}
-                                                </p>
-                                                <p className="px-3 py-1 rounded-full text-xs font-semibol">
-                                                    RefID: {people.description}
-                                                </p>
-                                            </div>
-                                        );
-                                    })}
-                                </td> */}
 
                                 <td className="px-6 py-4">
                                     <span
@@ -95,7 +87,7 @@ const ReservHistory = () => {
                     })}
                 </tbody>
             </table>
-        </div>
+        </motion.div>
     );
 };
 

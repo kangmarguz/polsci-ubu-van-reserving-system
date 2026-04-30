@@ -83,6 +83,7 @@ const ReservVanBookingPage = () => {
             const res = await bookingVan(result);
             if (res.status === 200 || res.data?.success) {
                 toast('Booking Success', { type: 'success' });
+                nagivate(redirectPath);
             } else {
                 const errorMsg = res.data?.message || 'Booking Fail';
                 toast(errorMsg, { type: 'error' });
@@ -91,15 +92,17 @@ const ReservVanBookingPage = () => {
             console.error('Booking Error:', error);
             const msg = error.response?.data?.message || 'Server Error';
             toast(msg, { type: 'error' });
-        } finally {
-            navigate(redirectPath);
         }
     };
 
     return (
         <div className="w-4/5 mx-auto mt-4">
-            <div>
-                <ButtonGoBackHome />
+            <ButtonGoBackHome />
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+            >
                 <h1 className="text-center text-blue-600 text-3xl font-bold my-4">
                     Van Booking
                 </h1>
@@ -170,7 +173,7 @@ const ReservVanBookingPage = () => {
                         isSubmitting={isSubmitting}
                     />
                 </form>
-            </div>
+            </motion.div>
         </div>
     );
 };

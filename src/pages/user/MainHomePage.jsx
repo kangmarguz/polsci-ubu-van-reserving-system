@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import CardsTemplate from '../../components/CardsTemplate';
-import { Van, ClipboardClock, FileCog } from 'lucide-react';
+import { Van, ClipboardClock, FileCog, ClockCheck } from 'lucide-react';
 import { Link } from 'react-router';
 import useClientStore from '../../store/client.store';
 import ReservHistory from './ReservHistory';
@@ -37,7 +37,15 @@ const MainHomePage = () => {
                     />
                 </Link>
             </motion.div>
-            <div className='p-4'>
+            <div className="p-4 flex items-center gap-3">
+                <h1 className="text-2xl font-bold text-gray-700">
+                    Latest event coming soon
+                </h1>
+                <div className='text-gray-700'>
+                    <ClockCheck size={24} />
+                </div>
+            </div>
+            <div className="p-4">
                 <ReservHistory />
             </div>
         </div>

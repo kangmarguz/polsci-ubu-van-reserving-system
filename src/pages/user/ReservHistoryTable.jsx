@@ -35,14 +35,20 @@ const ReservHistoryTable = () => {
     };
 
     return (
-        <div className="p-6 bg-gray-50 rounded-2xl shadow-md">
-            <table className="w-full table-fixed border-collapse overflow-hidden rounded-xl">
-                <thead>
-                    <tr className="bg-gray-100 text-gray-700 text-left text-sm uppercase tracking-wider">
-                        <th className="px-6 py-3 w-1/12">No.</th>
-                        <th className="px-6 py-3 w-auto">Reference</th>
-                        <th className="px-6 py-3 w-2/12 text-center">Status</th>
-                        <th className="px-6 py-3 w-2/12 text-center">Manage</th>
+        <div className="overflow-x-auto overflow-y-auto max-h-[60vh] border border-gray-200 rounded-xl">
+            <table className="w-full table-fixed border-collapse">
+                <thead className="sticky top-0 z-10 bg-gray-100 shadow-sm">
+                    <tr className="text-gray-700 text-left text-sm uppercase tracking-wider">
+                        <th className="px-6 py-3 w-1/12 bg-gray-100">No.</th>
+                        <th className="px-6 py-3 w-auto bg-gray-100">
+                            Reference
+                        </th>
+                        <th className="px-6 py-3 w-2/12 text-center bg-gray-100">
+                            Status
+                        </th>
+                        <th className="px-6 py-3 w-2/12 text-center bg-gray-100">
+                            Manage
+                        </th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
@@ -80,7 +86,7 @@ const ReservHistoryTable = () => {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <div className="flex items-center justify-around gap-2">
+                                    <div className="flex flex-col items-center gap-2 md:flex-row md:justify-around">
                                         <button
                                             onClick={() =>
                                                 openModal('info', item)
@@ -112,7 +118,6 @@ const ReservHistoryTable = () => {
                     })}
                 </tbody>
             </table>
-
             {modalState.type && (
                 <div
                     className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
