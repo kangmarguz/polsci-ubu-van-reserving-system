@@ -107,8 +107,8 @@ const ReservVanPage = () => {
     };
 
     return (
-        <div className="w-4/5 mx-auto mt-">
-            <div className="">
+        <div className="w-4/5 mx-auto mt-4">
+            <div>
                 <h1 className="text-center text-blue-600 text-3xl font-bold my-4">
                     Van Booking
                 </h1>
