@@ -4,13 +4,12 @@ import CardsTemplate from '../../components/CardsTemplate';
 import { Van, ClipboardClock, FileCog } from 'lucide-react';
 import { Link } from 'react-router';
 import useClientStore from '../../store/client.store';
+import ReservHistory from './ReservHistory';
 const MainHomePage = () => {
-
     const user = useClientStore((s) => s.user);
 
     return (
         <div className="w-4/5 mx-auto mt-3">
-            <div>INCOMING REQUEST.</div>
             <motion.div
                 className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4"
                 initial={{ opacity: 0, y: 20 }}
@@ -38,6 +37,9 @@ const MainHomePage = () => {
                     />
                 </Link>
             </motion.div>
+            <div className='p-4'>
+                <ReservHistory />
+            </div>
         </div>
     );
 };

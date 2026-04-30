@@ -25,8 +25,8 @@ axiosInstance.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             useClientStore.getState().actionLogout();
-            // window.location.href = '/';
         }
+        error.statusCode = error.response?.status;
         return Promise.reject(error);
     },
 );
