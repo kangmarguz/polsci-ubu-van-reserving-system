@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import CardsTemplate from '../../components/CardsTemplate';
-import { ClipboardClock, FileCog, Van } from 'lucide-react';
+import { ClipboardClock, FileCog, Van, UserRoundCog } from 'lucide-react';
 
 const AdminHomePage = () => {
     return (
@@ -29,7 +29,6 @@ const AdminHomePage = () => {
                     <CardsTemplate
                         title="My history"
                         desc="View your reserving van history."
-                        name="Recent"
                         icon={<ClipboardClock size={128} />}
                         detail={'View History'}
                     />
@@ -37,11 +36,18 @@ const AdminHomePage = () => {
 
                 <Link to="/admin/manage">
                     <CardsTemplate
-                        title="Manage"
+                        title="Manage Booking"
                         desc="Manage reqeust van reservation booking."
-                        name="Recent"
                         icon={<FileCog size={128} />}
                         detail={'View Booking'}
+                    />
+                </Link>
+                <Link to="/admin/users">
+                    <CardsTemplate
+                        title="Manage Users"
+                        desc="Manage user permission."
+                        icon={<UserRoundCog size={128}/>}
+                        detail={'View All Users'}
                     />
                 </Link>
             </motion.div>
