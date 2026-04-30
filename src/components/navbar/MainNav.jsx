@@ -17,7 +17,7 @@ const MainNav = ({ name }) => {
 
     return (
         <nav className="sticky top-0 z-50 w-full bg-orange-100 backdrop-blur-md border-b border-gray-100 shadow-sm transition-all">
-            <div className="max-w-7xl mx-auto flex py-4 px-6 justify-between items-center">
+            <div className="max-w-7xl mx-auto flex py-1 px-4 justify-between items-center">
                 {/* Logo Section */}
                 <div className="flex items-center">
                     <p className="text-2xl font-semibold tracking-tight text-green-600 cursor-pointer hover:opacity-80 transition-opacity">

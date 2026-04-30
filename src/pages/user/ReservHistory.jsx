@@ -31,7 +31,7 @@ const ReservHistory = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className='border border-gray-300 rounded-xl'
+            className='border border-gray-200 shadow-sm rounded-xl'
         >
             <table className="w-full border-collapse overflow-hidden rounded-xl">
                 <thead>
