@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { LogOut, ShieldCheck, UserRound } from 'lucide-react';
+import { ChevronDown, LogOut, ShieldCheck, UserPen, UserRound } from 'lucide-react';
 import useClientStore from '../../store/client.store';
 
 const MainNav = ({ name }) => {
     const navigate = useNavigate();
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
     const user = useClientStore((s) => s.user);
     const actionLogout = useClientStore((s) => s.actionLogout);
     const displayName = name || 'Guest User';
@@ -24,11 +26,17 @@ const MainNav = ({ name }) => {
 
     const handleLogout = () => {
         try {
+            setIsProfileOpen(false);
             actionLogout();
             navigate('/');
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const handleChangePassword = () => {
+        setIsProfileOpen(false);
+        navigate('/profile');
     };
 
     return (
@@ -55,28 +63,58 @@ const MainNav = ({ name }) => {
                 </button>
 
                 <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-4">
-                    <div className="hidden items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 sm:flex">
-                        <span className="flex size-9 items-center justify-center rounded-full bg-white text-emerald-600 shadow-sm">
-                            <UserRound className="size-5" />
-                        </span>
-                        <div className="max-w-48 leading-tight">
-                            <span className="block text-xs font-semibold uppercase text-slate-400">
-                                Welcome
+                    <div className="relative">
+                        <button
+                            type="button"
+                            onClick={() => setIsProfileOpen((prev) => !prev)}
+                            className="flex cursor-pointer items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-left transition hover:border-emerald-200 hover:bg-emerald-50"
+                            aria-haspopup="menu"
+                            aria-expanded={isProfileOpen}
+                        >
+                            <span className="flex size-9 items-center justify-center rounded-full bg-white text-emerald-600 shadow-sm">
+                                <UserRound className="size-5" />
                             </span>
-                            <p className="truncate text-sm font-bold text-slate-800">
-                                {displayName}
-                            </p>
+                            <div className="hidden max-w-48 leading-tight sm:block">
+                                <span className="block text-xs font-semibold uppercase text-slate-400">
+                                    Welcome
+                                </span>
+                                <p className="truncate text-sm font-bold text-slate-800">
+                                    {displayName}
+                                </p>
+                            </div>
+                            <ChevronDown
+                                className={`size-4 text-slate-500 transition-transform ${
+                                    isProfileOpen ? 'rotate-180' : ''
+                                }`}
+                            />
+                        </button>
+
+                        <div
+                            className={`absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl ${
+                                isProfileOpen ? 'block' : 'hidden'
+                            }`}
+                            role="menu"
+                        >
+                            <button
+                                type="button"
+                                onClick={handleChangePassword}
+                                className="flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-gray-700 transition hover:bg-emerald-50 hover:text-emerald-700"
+                                role="menuitem"
+                            >
+                                <UserPen size={18} />
+                                Change Password
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleLogout}
+                                className="flex w-full cursor-pointer items-center gap-3 border-t border-gray-100 px-4 py-3 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                                role="menuitem"
+                            >
+                                <LogOut size={18} />
+                                Logout
+                            </button>
                         </div>
                     </div>
-
-                    <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-red-100 bg-red-50 px-4 py-2.5 text-sm font-bold text-red-600 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-red-500 hover:bg-red-600 hover:text-white hover:shadow-md active:translate-y-0 sm:px-5"
-                    >
-                        <LogOut className="size-4" />
-                        <span className="hidden sm:inline">Logout</span>
-                    </button>
                 </div>
             </div>
         </nav>

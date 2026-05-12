@@ -14,6 +14,7 @@ const clientStore = (set) => ({
             console.log(error);
         }
     },
+    actionSetUser: (user) => set({ user }),
     actionLogout: () => set({ user: null, token: null }),
 });
 

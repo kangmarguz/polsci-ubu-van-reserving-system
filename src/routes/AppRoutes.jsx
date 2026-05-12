@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import LoginPage from '../pages/LoginPage';
 import Layout from '../layout/Layout';
@@ -8,12 +7,11 @@ import ProtectRoutes from './ProtectRoutes';
 import PageNotFound404 from '../components/utils/PageNotFound404';
 import MainHomePage from '../pages/user/MainHomePage';
 import ReservVanHistory from '../pages/user/ReservVanHistory';
-import ManageVanReservPage from '../pages/admin/AdminHomePage';
-import useClientStore from '../store/client.store';
 import AdminHomePage from '../pages/admin/AdminHomePage';
 import AdminManagBooking from '../pages/admin/AdminManagBooking';
 import ReservVanBookingPage from '../pages/user/ReservVanBookingPage';
 import AdminManageUsers from '../pages/admin/AdminManageUsers';
+import EditProfilePage from '../pages/EditProfilePage';
 
 const AppRoutes = () => {
 
@@ -33,6 +31,7 @@ const AppRoutes = () => {
                     <Route path="/home" element={<MainHomePage />} />
                     <Route path="/home/booking" element={<ReservVanBookingPage />} />
                     <Route path="/home/history" element={<ReservVanHistory />} />
+                    <Route path="/profile" element={<EditProfilePage />} />
                 </Route>
 
                 {/* PRIVATE ADMIN ROUTES */}
