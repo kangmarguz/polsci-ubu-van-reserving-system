@@ -99,14 +99,6 @@ const ReservHistoryTable = () => {
                                         </button>
                                         <button
                                             onClick={() =>
-                                                openModal('edit', item)
-                                            }
-                                            className="text-orange-500 p-1 hover:bg-orange-200 rounded cursor-pointer"
-                                        >
-                                            <Bolt />
-                                        </button>
-                                        <button
-                                            onClick={() =>
                                                 openModal('delete', item)
                                             }
                                             className="text-red-500 p-1 hover:bg-red-200 rounded cursor-pointer"
@@ -136,15 +128,6 @@ const ReservHistoryTable = () => {
                                 closeModal={closeModal}
                             />
                         )}
-
-                        {/* EDIT MODAL }
-                        {modalState.type === 'edit' && (
-                            <EditModal
-                                item={modalState.item}
-                                onClose={closeModal}
-                                onSave={fetchHistory}
-                            />
-                        )} */}
 
                         {/* DELETE MODAL */}
                         {modalState.type === 'delete' && (
