@@ -4,8 +4,23 @@ import useClientStore from '../../store/client.store';
 
 const MainNav = ({ name }) => {
     const navigate = useNavigate();
+    const user = useClientStore((s) => s.user);
     const actionLogout = useClientStore((s) => s.actionLogout);
     const displayName = name || 'Guest User';
+
+    const handleGoHome = () => {
+        if (user?.role === 'ADMIN') {
+            navigate('/admin');
+            return;
+        }
+
+        if (user) {
+            navigate('/home');
+            return;
+        }
+
+        navigate('/');
+    };
 
     const handleLogout = () => {
         try {
@@ -21,8 +36,8 @@ const MainNav = ({ name }) => {
             <div className="mx-auto flex min-h-18 max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
                 <button
                     type="button"
-                    onClick={() => navigate('/')}
-                    className="group flex min-w-0 items-center gap-3 text-left"
+                    onClick={handleGoHome}
+                    className="group flex min-w-0 cursor-pointer items-center gap-3 text-left"
                     aria-label="Go to home page"
                 >
                     <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-md shadow-emerald-900/10 transition-transform duration-300 group-hover:-translate-y-0.5">
@@ -57,7 +72,7 @@ const MainNav = ({ name }) => {
                     <button
                         type="button"
                         onClick={handleLogout}
-                        className="inline-flex items-center justify-center gap-2 rounded-full border border-red-100 bg-red-50 px-4 py-2.5 text-sm font-bold text-red-600 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-red-500 hover:bg-red-600 hover:text-white hover:shadow-md active:translate-y-0 sm:px-5"
+                        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-full border border-red-100 bg-red-50 px-4 py-2.5 text-sm font-bold text-red-600 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-red-500 hover:bg-red-600 hover:text-white hover:shadow-md active:translate-y-0 sm:px-5"
                     >
                         <LogOut className="size-4" />
                         <span className="hidden sm:inline">Logout</span>
