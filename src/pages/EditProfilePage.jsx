@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { KeyRound, ShieldCheck, UserRound } from 'lucide-react';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 import { updateUserPassword } from '../api/userLogin';
 import InputText from '../components/InputText';
@@ -28,7 +29,10 @@ const passwordSchema = z
 
 const EditProfilePage = () => {
     const user = useClientStore((s) => s.user);
+    const actionSetUser = useClientStore((s) => s.actionSetUser);
+    const navigate = useNavigate();
     const redirectPath = user?.role === 'ADMIN' ? '/admin' : '/home';
+    const isPasswordResetRequired = Boolean(user?.passwordResetRequired);
 
     const {
         register,
@@ -50,8 +54,10 @@ const EditProfilePage = () => {
                 currentPassword: data.currentPassword,
                 newPassword: data.newPassword,
             });
+            actionSetUser({ ...user, passwordResetRequired: false });
             reset();
             toast('Password changed successfully', { type: 'success' });
+            navigate(redirectPath, { replace: true });
         } catch (error) {
             console.error('Change password failed:', error);
             toast(error.response?.data?.message || 'Cannot change password', {
@@ -59,13 +65,12 @@ const EditProfilePage = () => {
             });
         }
     };
-    
-    console.log(user);
-    
 
     return (
         <div className="w-4/5 mx-auto my-4 border border-gray-100 rounded-2xl shadow-sm">
-            <ButtonGoBackHome redirectPath={redirectPath} />
+            {!isPasswordResetRequired && (
+                <ButtonGoBackHome redirectPath={redirectPath} />
+            )}
             <motion.div
                 className="mx-auto max-w-2xl p-4"
                 initial={{ opacity: 0, y: 20 }}
@@ -81,10 +86,14 @@ const EditProfilePage = () => {
                             Account Security
                         </p>
                         <h1 className="text-2xl font-bold text-gray-900">
-                            Change Password
+                            {isPasswordResetRequired
+                                ? 'Create New Password'
+                                : 'Change Password'}
                         </h1>
                         <p className="text-sm text-gray-600">
-                            Update your password to keep your account secure.
+                            {isPasswordResetRequired
+                                ? 'Please create a new password before continuing.'
+                                : 'Update your password to keep your account secure.'}
                         </p>
                     </div>
                 </div>

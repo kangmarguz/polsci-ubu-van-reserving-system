@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import InputText from '../components/InputText';
 import SubmitButton from '../components/SubmitButton';
-import { loginUser } from '../api/userLogin';
 import useClientStore from '../store/client.store';
 import { Link, useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
@@ -33,6 +32,11 @@ const LoginPage = () => {
                 toast('Login Success', {
                     type: 'success',
                 });
+
+                if (user?.reset) {
+                    navigate('/profile', { replace: true });
+                    return;
+                }
 
                 if (user?.role === 'ADMIN') {
                     navigate('/admin');

@@ -1,6 +1,14 @@
 import React from 'react';
 
-const InputText = ({ register, name, label, errors, type="text", placeholder }) => {
+const InputText = ({
+    register,
+    name,
+    label,
+    errors,
+    type = 'text',
+    placeholder,
+    ...inputProps
+}) => {
     const hasError = !!errors[name];
     return (
         <div className="flex flex-col gap-1.5 mb-4">
@@ -11,6 +19,7 @@ const InputText = ({ register, name, label, errors, type="text", placeholder }) 
             <input
                 {...register(name)}
                 type={type}
+                {...inputProps}
                 className={`    
                     w-full px-4 py-2.5 rounded-xl border transition-all duration-200 outline-none
                     ${
