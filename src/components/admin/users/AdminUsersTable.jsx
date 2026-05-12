@@ -1,4 +1,4 @@
-import { LoaderCircle, Power, ShieldCheck } from 'lucide-react';
+import { KeyRound, LoaderCircle, Power, ShieldCheck } from 'lucide-react';
 
 import { roleOptions } from './userManagementUtils';
 
@@ -6,20 +6,25 @@ const AdminUsersTable = ({
     users,
     isLoading,
     updatingUserId,
+    resettingUserId,
     onRoleChange,
     onActiveChange,
+    onResetPassword,
 }) => (
     <div className="overflow-x-auto overflow-y-auto max-h-[62vh] rounded-xl border border-gray-200">
-        <table className="w-full min-w-160 table-fixed border-collapse">
+        <table className="w-full min-w-190 table-fixed border-collapse">
             <thead className="sticky top-0 z-10 bg-gray-100 shadow-sm">
                 <tr className="text-left text-sm uppercase tracking-wider text-gray-700">
                     <th className="w-1/12 bg-gray-100 px-6 py-3">No.</th>
-                    <th className="w-5/12 bg-gray-100 px-6 py-3">Name</th>
+                    <th className="w-4/12 bg-gray-100 px-6 py-3">Name</th>
                     <th className="w-3/12 bg-gray-100 px-6 py-3 text-center">
                         Active
                     </th>
                     <th className="w-3/12 bg-gray-100 px-6 py-3 text-center">
                         Role
+                    </th>
+                    <th className="w-2/12 bg-gray-100 px-6 py-3 text-center">
+                        Password
                     </th>
                 </tr>
             </thead>
@@ -35,8 +40,10 @@ const AdminUsersTable = ({
                             user={user}
                             index={index}
                             isUpdating={updatingUserId === user.id}
+                            isResetting={resettingUserId === user.id}
                             onRoleChange={onRoleChange}
                             onActiveChange={onActiveChange}
+                            onResetPassword={onResetPassword}
                         />
                     ))}
             </tbody>
@@ -44,7 +51,15 @@ const AdminUsersTable = ({
     </div>
 );
 
-const UserRow = ({ user, index, isUpdating, onRoleChange, onActiveChange }) => (
+const UserRow = ({
+    user,
+    index,
+    isUpdating,
+    isResetting,
+    onRoleChange,
+    onActiveChange,
+    onResetPassword,
+}) => (
     <tr className="transition duration-150 hover:bg-gray-50">
         <td className="px-6 py-4 text-gray-700">{index + 1}</td>
         <td className="px-6 py-4">
@@ -92,12 +107,27 @@ const UserRow = ({ user, index, isUpdating, onRoleChange, onActiveChange }) => (
                 </select>
             </div>
         </td>
+        <td className="px-6 py-4 text-center">
+            <button
+                type="button"
+                onClick={() => onResetPassword(user)}
+                disabled={isResetting}
+                className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-amber-100 bg-amber-50 px-3 py-2 text-sm font-bold text-amber-700 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+                {isResetting ? (
+                    <LoaderCircle size={16} className="animate-spin" />
+                ) : (
+                    <KeyRound size={16} />
+                )}
+                Reset
+            </button>
+        </td>
     </tr>
 );
 
 const LoadingRow = () => (
     <tr>
-        <td colSpan="4" className="px-6 py-10 text-center text-gray-500">
+        <td colSpan="5" className="px-6 py-10 text-center text-gray-500">
             <div className="inline-flex items-center gap-2">
                 <LoaderCircle size={20} className="animate-spin" />
                 Loading users...
@@ -108,7 +138,7 @@ const LoadingRow = () => (
 
 const EmptyRow = () => (
     <tr>
-        <td colSpan="4" className="px-6 py-10 text-center text-gray-500">
+        <td colSpan="5" className="px-6 py-10 text-center text-gray-500">
             No users found.
         </td>
     </tr>

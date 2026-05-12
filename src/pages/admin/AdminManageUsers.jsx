@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 import {
     getAllUsers,
+    resetUserPassword,
     updateUserActive,
     updateUserRole,
 } from '../../api/adminUserAPI';
@@ -20,6 +21,7 @@ const AdminManageUsers = () => {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [updatingUserId, setUpdatingUserId] = useState(null);
+    const [resettingUserId, setResettingUserId] = useState(null);
     const [pendingChange, setPendingChange] = useState(null);
     const [searchText, setSearchText] = useState('');
 
@@ -112,6 +114,21 @@ const AdminManageUsers = () => {
         }
     };
 
+    const handleResetPassword = async (user) => {
+        setResettingUserId(user.id);
+        try {
+            await resetUserPassword(user.id);
+            toast(`Password reset sent for ${getUserDisplayName(user)}`, {
+                type: 'success',
+            });
+        } catch (error) {
+            console.error('Reset password failed:', error);
+            toast('Cannot reset user password', { type: 'error' });
+        } finally {
+            setResettingUserId(null);
+        }
+    };
+
     return (
         <div className="w-4/5 mx-auto my-4 border border-gray-100 rounded-2xl shadow-sm">
             <ButtonGoBackHome redirectPath="/admin" />
@@ -134,8 +151,10 @@ const AdminManageUsers = () => {
                     users={filteredUsers}
                     isLoading={isLoading}
                     updatingUserId={updatingUserId}
+                    resettingUserId={resettingUserId}
                     onRoleChange={requestRoleChange}
                     onActiveChange={requestActiveChange}
+                    onResetPassword={handleResetPassword}
                 />
             </motion.div>
 

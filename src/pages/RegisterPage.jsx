@@ -1,4 +1,3 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,6 +5,7 @@ import InputText from '../components/InputText';
 import SubmitButton from '../components/SubmitButton';
 import { useNavigate } from 'react-router';
 import { registerUser } from '../api/userLogin';
+import { toast } from 'react-toastify';
 
 const registerSchema = z
     .object({
@@ -44,16 +44,18 @@ const RegisterPage = () => {
     const onRegisterSubmit = async (data) => {
         try {
             const res = await registerUser(data);
-            console.log(res.status);
             if (res.ok || (res.status >= 200 && res.status < 300)) {
-                alert('register success');
+                toast('Register successful', { type: 'success' });
                 navigate('/');
             } else {
-                alert('error', res.status);
+                toast('Cannot register user', { type: 'error' });
             }
         } catch (error) {
-            console.log(error);
-            alert("A network error occurred.");
+            console.error('Register failed:', error);
+            toast(
+                error.response?.data?.message || 'A network error occurred.',
+                { type: 'error' },
+            );
         }
     };
 

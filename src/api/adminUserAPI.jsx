@@ -11,3 +11,7 @@ export const updateUserRole = (id, role) => {
 export const updateUserActive = (id, isActive) => {
     return axiosInstance.patch(`/users/${id}/active`, { isActive });
 };
+
+export const resetUserPassword = (id) => {
+    return axiosInstance.post(`/users/reset/${id}`);
+};
