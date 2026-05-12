@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 import { toast } from 'react-toastify';
+import { CheckCircle2, Clock3, LoaderCircle, XCircle } from 'lucide-react';
 
 import {
     deleteBooking,
@@ -18,6 +19,37 @@ import {
 import ButtonGoBackHome from '../../components/utils/ButtonGoBackHome';
 import { syncCompletedBookings } from '../../utils/bookingStatusSync';
 
+const STATUS_TABLES = [
+    {
+        key: 'PENDING',
+        label: 'Pending',
+        statuses: ['PENDING'],
+        icon: Clock3,
+        className: 'border-yellow-200 bg-yellow-50 text-yellow-700',
+    },
+    {
+        key: 'IN_PROGRESS',
+        label: 'In Progress',
+        statuses: ['IN_PROGRESS', 'APPROVED'],
+        icon: LoaderCircle,
+        className: 'border-blue-200 bg-blue-50 text-blue-700',
+    },
+    {
+        key: 'COMPLETE',
+        label: 'Complete',
+        statuses: ['COMPLETE', 'COMPLETED'],
+        icon: CheckCircle2,
+        className: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    },
+    {
+        key: 'CANCEL',
+        label: 'Cancel',
+        statuses: ['CANCEL', 'CANCELLED', 'REJECTED'],
+        icon: XCircle,
+        className: 'border-red-200 bg-red-50 text-red-700',
+    },
+];
+
 const AdminManagBooking = () => {
     const [bookings, setBookings] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -25,6 +57,7 @@ const AdminManagBooking = () => {
     const [bookingToDelete, setBookingToDelete] = useState(null);
     const [processingStatus, setProcessingStatus] = useState(null);
     const [searchText, setSearchText] = useState('');
+    const [activeStatusTable, setActiveStatusTable] = useState('PENDING');
 
     const fetchBookings = useCallback(async () => {
         setIsLoading(true);
@@ -40,7 +73,7 @@ const AdminManagBooking = () => {
         }
     }, []);
 
-    const filteredBookings = useMemo(() => {
+    const searchedBookings = useMemo(() => {
         const keyword = searchText.trim().toLowerCase();
         if (!keyword) return bookings;
 
@@ -58,6 +91,17 @@ const AdminManagBooking = () => {
             return searchable.includes(keyword);
         });
     }, [bookings, searchText]);
+
+    const bookingsByStatusTable = useMemo(() => {
+        return STATUS_TABLES.reduce((acc, table) => {
+            acc[table.key] = searchedBookings.filter((booking) =>
+                table.statuses.includes(booking?.status),
+            );
+            return acc;
+        }, {});
+    }, [searchedBookings]);
+
+    const activeBookings = bookingsByStatusTable[activeStatusTable] || [];
 
     useEffect(() => {
         Promise.resolve().then(fetchBookings);
@@ -140,8 +184,14 @@ const AdminManagBooking = () => {
                     onSearchChange={setSearchText}
                 />
 
+                <StatusTableTabs
+                    activeStatusTable={activeStatusTable}
+                    bookingsByStatusTable={bookingsByStatusTable}
+                    onStatusTableChange={setActiveStatusTable}
+                />
+
                 <AdminBookingTable
-                    bookings={filteredBookings}
+                    bookings={activeBookings}
                     isLoading={isLoading}
                     onSelectBooking={setSelectedBooking}
                     onDeleteBooking={handleRequestDeleteBooking}
@@ -169,5 +219,49 @@ const AdminManagBooking = () => {
         </div>
     );
 };
+
+const StatusTableTabs = ({
+    activeStatusTable,
+    bookingsByStatusTable,
+    onStatusTableChange,
+}) => (
+    <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {STATUS_TABLES.map((table) => {
+            const Icon = table.icon;
+            const count = bookingsByStatusTable[table.key]?.length || 0;
+            const isActive = activeStatusTable === table.key;
+
+            return (
+                <button
+                    key={table.key}
+                    type="button"
+                    onClick={() => onStatusTableChange(table.key)}
+                    className={`flex items-center justify-between rounded-xl border px-4 py-3 text-left transition ${
+                        isActive
+                            ? table.className
+                            : 'border-gray-200 bg-white text-gray-600 hover:bg-gray-50'
+                    }`}
+                >
+                    <span className="flex items-center gap-3">
+                        <span className="flex size-10 items-center justify-center rounded-xl bg-white/80">
+                            <Icon size={20} />
+                        </span>
+                        <span>
+                            <span className="block text-sm font-bold">
+                                {table.label}
+                            </span>
+                            <span className="text-xs opacity-75">
+                                {table.key} table
+                            </span>
+                        </span>
+                    </span>
+                    <span className="rounded-full bg-white px-3 py-1 text-sm font-bold shadow-sm">
+                        {count}
+                    </span>
+                </button>
+            );
+        })}
+    </div>
+);
 
 export default AdminManagBooking;

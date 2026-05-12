@@ -2,7 +2,9 @@ import dayjs from 'dayjs';
 
 export const statusStyles = {
     APPROVED: 'bg-green-100 text-green-700',
+    COMPLETE: 'bg-green-100 text-green-700',
     COMPLETED: 'bg-green-100 text-green-700',
+    CANCEL: 'bg-red-100 text-red-700',
     REJECTED: 'bg-red-100 text-red-700',
     CANCELLED: 'bg-red-100 text-red-700',
     PENDING: 'bg-yellow-100 text-yellow-700',
