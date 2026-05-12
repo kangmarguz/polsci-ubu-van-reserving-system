@@ -13,6 +13,7 @@ import useClientStore from '../store/client.store';
 import AdminHomePage from '../pages/admin/AdminHomePage';
 import AdminManagBooking from '../pages/admin/AdminManagBooking';
 import ReservVanBookingPage from '../pages/user/ReservVanBookingPage';
+import AdminManageUsers from '../pages/admin/AdminManageUsers';
 
 const AppRoutes = () => {
 
@@ -40,6 +41,7 @@ const AppRoutes = () => {
                 >
                     <Route path="/admin" element={<AdminHomePage />} />
                     <Route path="/admin/manage" element={<AdminManagBooking />} />
+                    <Route path="/admin/users" element={<AdminManageUsers />} />
                 </Route>
 
                 {/* NOT FOUND PAGE */}
