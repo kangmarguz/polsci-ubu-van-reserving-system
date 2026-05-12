@@ -5,6 +5,7 @@ import { getBookingHistory } from '../../api/bookingVanAPI';
 import useClientStore from '../../store/client.store';
 import ModalInfomation from '../../components/modal/ModalInfomation';
 import ModalDeletaHistory from '../../components/modal/ModalDeletaHistory';
+import { syncCompletedBookings } from '../../utils/bookingStatusSync';
 
 const ReservHistoryTable = () => {
     const user = useClientStore((s) => s.user);
@@ -22,7 +23,8 @@ const ReservHistoryTable = () => {
     const fecthHistory = async () => {
         try {
             const res = await getBookingHistory(user.id);
-            setHistory(res.data.result);
+            const syncedHistory = await syncCompletedBookings(res.data?.result);
+            setHistory(syncedHistory);
         } catch (error) {
             console.log(error);
         }

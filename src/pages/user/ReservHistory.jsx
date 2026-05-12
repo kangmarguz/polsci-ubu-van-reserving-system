@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { getBookingHistory } from '../../api/bookingVanAPI';
 import useClientStore from '../../store/client.store';
+import { syncCompletedBookings } from '../../utils/bookingStatusSync';
 
 const ReservHistory = () => {
     const user = useClientStore((s) => s.user);
@@ -14,7 +15,8 @@ const ReservHistory = () => {
     const fecthHistory = async () => {
         try {
             const res = await getBookingHistory(user.id, 6);
-            setHistory(res.data.result);
+            const syncedHistory = await syncCompletedBookings(res.data?.result);
+            setHistory(syncedHistory);
         } catch (error) {
             console.log(error);
         }

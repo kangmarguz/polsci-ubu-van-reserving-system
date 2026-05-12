@@ -9,6 +9,7 @@ import {
     buildMonthDays,
     groupBookingsByDate,
 } from './bookingMonthUtils';
+import { syncCompletedBookings } from '../../utils/bookingStatusSync';
 
 const BookingMonthTable = () => {
     const [bookings, setBookings] = useState([]);
@@ -22,7 +23,8 @@ const BookingMonthTable = () => {
 
         try {
             const res = await getAllBookings();
-            setBookings(res.data?.result || []);
+            const syncedBookings = await syncCompletedBookings(res.data?.result);
+            setBookings(syncedBookings);
         } catch (err) {
             console.error('Fetch booking month failed:', err);
             setError('Cannot load reservation calendar.');

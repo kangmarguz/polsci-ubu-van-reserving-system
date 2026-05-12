@@ -16,6 +16,7 @@ import {
     getRequester,
 } from '../../components/admin/booking/bookingUtils';
 import ButtonGoBackHome from '../../components/utils/ButtonGoBackHome';
+import { syncCompletedBookings } from '../../utils/bookingStatusSync';
 
 const AdminManagBooking = () => {
     const [bookings, setBookings] = useState([]);
@@ -29,7 +30,8 @@ const AdminManagBooking = () => {
         setIsLoading(true);
         try {
             const res = await getAllBookings();
-            setBookings(res.data.result);
+            const syncedBookings = await syncCompletedBookings(res.data?.result);
+            setBookings(syncedBookings);
         } catch (error) {
             console.error('Fetch bookings failed:', error);
             toast('Cannot load booking list', { type: 'error' });
