@@ -1,4 +1,4 @@
-import { Eye, LoaderCircle } from 'lucide-react';
+import { Eye, LoaderCircle, Trash2 } from 'lucide-react';
 
 import {
     formatDate,
@@ -9,13 +9,18 @@ import {
     statusStyles,
 } from './bookingUtils';
 
-const AdminBookingTable = ({ bookings, isLoading, onSelectBooking }) => (
+const AdminBookingTable = ({
+    bookings,
+    isLoading,
+    onSelectBooking,
+    onDeleteBooking,
+}) => (
     <div className="overflow-x-auto overflow-y-auto max-h-[62vh] border border-gray-200 rounded-xl">
         <table className="w-full min-w-190 table-fixed border-collapse">
             <thead className="sticky top-0 z-10 bg-gray-100 shadow-sm">
                 <tr className="text-gray-700 text-left text-sm uppercase tracking-wider">
                     <th className="px-6 py-3 w-1/12 bg-gray-100">No.</th>
-                    <th className="px-6 py-3 w-5/12 bg-gray-100">
+                    <th className="px-6 py-3 w-4/12 bg-gray-100">
                         Request
                     </th>
                     <th className="px-6 py-3 w-3/12 bg-gray-100">Date</th>
@@ -24,6 +29,9 @@ const AdminBookingTable = ({ bookings, isLoading, onSelectBooking }) => (
                     </th>
                     <th className="px-6 py-3 w-1/12 text-center bg-gray-100">
                         Detail
+                    </th>
+                    <th className="px-6 py-3 w-1/12 text-center bg-gray-100">
+                        Delete
                     </th>
                 </tr>
             </thead>
@@ -39,6 +47,7 @@ const AdminBookingTable = ({ bookings, isLoading, onSelectBooking }) => (
                             booking={booking}
                             index={index}
                             onSelectBooking={onSelectBooking}
+                            onDeleteBooking={onDeleteBooking}
                         />
                     ))}
             </tbody>
@@ -48,7 +57,7 @@ const AdminBookingTable = ({ bookings, isLoading, onSelectBooking }) => (
 
 const LoadingRow = () => (
     <tr>
-        <td colSpan="5" className="px-6 py-10 text-center text-gray-500">
+        <td colSpan="6" className="px-6 py-10 text-center text-gray-500">
             <div className="inline-flex items-center gap-2">
                 <LoaderCircle size={20} className="animate-spin" />
                 Loading bookings...
@@ -59,13 +68,18 @@ const LoadingRow = () => (
 
 const EmptyRow = () => (
     <tr>
-        <td colSpan="5" className="px-6 py-10 text-center text-gray-500">
+        <td colSpan="6" className="px-6 py-10 text-center text-gray-500">
             No booking request found.
         </td>
     </tr>
 );
 
-const BookingTableRow = ({ booking, index, onSelectBooking }) => (
+const BookingTableRow = ({
+    booking,
+    index,
+    onSelectBooking,
+    onDeleteBooking,
+}) => (
     <tr className="hover:bg-gray-50 transition duration-150">
         <td className="px-6 py-4">{index + 1}</td>
         <td className="px-6 py-4">
@@ -105,6 +119,16 @@ const BookingTableRow = ({ booking, index, onSelectBooking }) => (
                 aria-label="View booking detail"
             >
                 <Eye size={20} />
+            </button>
+        </td>
+        <td className="px-6 py-4 text-center">
+            <button
+                type="button"
+                onClick={() => onDeleteBooking(booking)}
+                className="inline-flex p-2 rounded-lg text-red-600 cursor-pointer hover:bg-red-100"
+                aria-label="Delete booking"
+            >
+                <Trash2 size={20} />
             </button>
         </td>
     </tr>

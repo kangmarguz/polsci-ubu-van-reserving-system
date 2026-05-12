@@ -2,10 +2,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { motion } from 'motion/react';
 import { toast } from 'react-toastify';
 
-import { getAllBookings, updateBookingStatus } from '../../api/bookingVanAPI';
+import {
+    deleteBooking,
+    getAllBookings,
+    updateBookingStatus,
+} from '../../api/bookingVanAPI';
 import AdminBookingHeader from '../../components/admin/booking/AdminBookingHeader';
 import AdminBookingTable from '../../components/admin/booking/AdminBookingTable';
 import BookingDetailModal from '../../components/admin/booking/BookingDetailModal';
+import ConfirmDeleteBookingModal from '../../components/admin/booking/ConfirmDeleteBookingModal';
 import {
     getDescription,
     getRequester,
@@ -16,6 +21,7 @@ const AdminManagBooking = () => {
     const [bookings, setBookings] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedBooking, setSelectedBooking] = useState(null);
+    const [bookingToDelete, setBookingToDelete] = useState(null);
     const [processingStatus, setProcessingStatus] = useState(null);
     const [searchText, setSearchText] = useState('');
 
@@ -85,6 +91,37 @@ const AdminManagBooking = () => {
         }
     };
 
+    const handleRequestDeleteBooking = (booking) => {
+        setBookingToDelete(booking);
+    };
+
+    const handleCancelDeleteBooking = () => {
+        if (processingStatus) return;
+        setBookingToDelete(null);
+    };
+
+    const handleDeleteBooking = async () => {
+        if (!bookingToDelete) return;
+
+        setProcessingStatus('DELETE');
+        try {
+            await deleteBooking(bookingToDelete.id);
+            setBookings((prev) =>
+                prev.filter((booking) => booking.id !== bookingToDelete.id),
+            );
+            setSelectedBooking((prev) =>
+                prev?.id === bookingToDelete.id ? null : prev,
+            );
+            setBookingToDelete(null);
+            toast('Booking deleted successfully', { type: 'success' });
+        } catch (error) {
+            console.error('Delete booking failed:', error);
+            toast('Cannot delete booking', { type: 'error' });
+        } finally {
+            setProcessingStatus(null);
+        }
+    };
+
     return (
         <div className="w-4/5 mx-auto my-4 border border-gray-100 rounded-2xl shadow-sm">
             <ButtonGoBackHome redirectPath="/admin" />
@@ -105,6 +142,7 @@ const AdminManagBooking = () => {
                     bookings={filteredBookings}
                     isLoading={isLoading}
                     onSelectBooking={setSelectedBooking}
+                    onDeleteBooking={handleRequestDeleteBooking}
                 />
             </motion.div>
 
@@ -114,6 +152,16 @@ const AdminManagBooking = () => {
                     processingStatus={processingStatus}
                     onClose={() => setSelectedBooking(null)}
                     onProcess={handleProcessBooking}
+                    onDeleteRequest={() => handleRequestDeleteBooking(selectedBooking)}
+                />
+            )}
+
+            {bookingToDelete && (
+                <ConfirmDeleteBookingModal
+                    booking={bookingToDelete}
+                    isDeleting={processingStatus === 'DELETE'}
+                    onCancel={handleCancelDeleteBooking}
+                    onConfirm={handleDeleteBooking}
                 />
             )}
         </div>

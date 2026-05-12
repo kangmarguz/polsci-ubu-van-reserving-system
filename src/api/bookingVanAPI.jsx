@@ -21,3 +21,7 @@ export const getAllBookings = () => {
 export const updateBookingStatus = (id, status) => {
     return axiosInstance.patch(`/booking/${id}`, { status });
 };
+
+export const deleteBooking = (id) => {
+    return axiosInstance.delete(`/history/${id}`);
+};

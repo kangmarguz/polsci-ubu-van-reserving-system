@@ -1,4 +1,4 @@
-import { Check, LoaderCircle, MoveRight, X } from 'lucide-react';
+import { Check, LoaderCircle, MoveRight, Trash2, X } from 'lucide-react';
 
 import {
     formatDate,
@@ -15,6 +15,7 @@ const BookingDetailModal = ({
     processingStatus,
     onClose,
     onProcess,
+    onDeleteRequest,
 }) => {
     const people = getPeople(booking);
 
@@ -40,6 +41,7 @@ const BookingDetailModal = ({
                     processingStatus={processingStatus}
                     onClose={onClose}
                     onProcess={onProcess}
+                    onDeleteRequest={onDeleteRequest}
                 />
             </div>
         </div>
@@ -156,8 +158,22 @@ const PersonRow = ({ person, index }) => (
     </div>
 );
 
-const ModalActions = ({ processingStatus, onClose, onProcess }) => (
+const ModalActions = ({
+    processingStatus,
+    onClose,
+    onProcess,
+    onDeleteRequest,
+}) => (
     <div className="shrink-0 px-6 py-4 border-t border-gray-100 bg-gray-50/50 flex flex-col gap-2 sm:flex-row sm:justify-end">
+        <button
+            type="button"
+            onClick={onDeleteRequest}
+            disabled={!!processingStatus}
+            className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-xl bg-white border border-red-200 text-sm font-bold text-red-600 cursor-pointer hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+            <Trash2 size={16} />
+            Delete
+        </button>
         <button
             type="button"
             onClick={onClose}
@@ -168,7 +184,7 @@ const ModalActions = ({ processingStatus, onClose, onProcess }) => (
         </button>
         <button
             type="button"
-            onClick={() => onProcess('REJECTED')}
+            onClick={() => onProcess('CANCEL')}
             disabled={!!processingStatus}
             className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-xl bg-red-600 text-sm font-bold text-white cursor-pointer hover:bg-red-700 disabled:bg-red-300 disabled:cursor-not-allowed"
         >
@@ -181,7 +197,7 @@ const ModalActions = ({ processingStatus, onClose, onProcess }) => (
         </button>
         <button
             type="button"
-            onClick={() => onProcess('APPROVED')}
+            onClick={() => onProcess('IN_PROGRESS')}
             disabled={!!processingStatus}
             className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-xl bg-green-600 text-sm font-bold text-white cursor-pointer hover:bg-green-700 disabled:bg-green-300 disabled:cursor-not-allowed"
         >
