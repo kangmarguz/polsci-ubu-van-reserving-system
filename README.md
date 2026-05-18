@@ -1,19 +1,59 @@
-# polsci-ubu-van-reserving-system
-developing to reserving van system for political science UBU.
-=======
-# React + Vite
+# Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend for the van reservation system.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React 19
+- Vite
+- Tailwind CSS 4
+- React Router
+- Zustand
+- Axios
+- React Hook Form
+- Zod
 
-## React Compiler
+## Main Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Login and registration
+- Protected user routes
+- Protected admin routes
+- Password reset enforcement via profile page
+- Van booking page
+- Booking history page
+- Admin booking management
+- Admin user management
 
-## Expanding the ESLint configuration
+## Routes
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `/` login
+- `/register` register
+- `/home` user home
+- `/home/booking` booking form
+- `/home/history` booking history
+- `/profile` profile and password update
+- `/admin` admin dashboard
+- `/admin/manage` admin booking management
+- `/admin/users` admin user management
+
+## Environment
+
+Create `client/.env`:
+
+```env
+VITE_API_BASE_URL=http://localhost:3333/api
+```
+
+## Run
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+## Notes
+
+- Auth state is stored with Zustand and persisted in local storage.
+- API requests use the shared Axios instance in `src/services/axios.instance.js`.
+- If the backend runs on a different port, update `VITE_API_BASE_URL`.
